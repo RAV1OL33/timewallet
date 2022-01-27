@@ -1,0 +1,179 @@
+<div class="time-wallet__container">
+  <div class="income__container __container">
+    <div class="income__header __title">
+      INCOME
+    </div>
+    <div class="income__btn_grp">
+      <button>-</button>
+      <input type="number" (input)="this.userIncome  = +income_input.value" #income_input>
+      <button>+</button>
+    </div>
+    <div class="income__additional_btn_grp">
+      <div class="income_options">
+        <div class="income_options__income_frequency">
+          <div (click)="changeIncomeInterval(0)" [class.__active_elem]="activeUserIncomeInterval==0">hour</div>
+          •
+          <div (click)="changeIncomeInterval(1)" [class.__active_elem]="activeUserIncomeInterval==1">day</div>
+          •
+          <div (click)="changeIncomeInterval(2)" [class.__active_elem]="activeUserIncomeInterval==2">week</div>
+          •
+          <div (click)="changeIncomeInterval(3)" [class.__active_elem]="activeUserIncomeInterval==3">month</div>
+          •
+          <div (click)="changeIncomeInterval(4)" [class.__active_elem]="activeUserIncomeInterval==4">year</div>
+        </div>
+        <div class="income_options__work_type">
+
+        </div>
+      </div>
+      <div class="income_options__currency_option __gill-sans">
+        <div [class.__active_elem]="activeCurrency==0" (click)="activeCurrency=0">$</div>
+        <div [class.__active_elem]="activeCurrency==1" (click)="activeCurrency=1">₽</div>
+        <div [class.__active_elem]="activeCurrency==2" (click)="activeCurrency=2">€</div>
+      </div>
+    </div>
+  </div>
+  <div class="purpose__container __container">
+    <div class="purpose__header __title">
+      WANT TO BUY
+    </div>
+    <div class="purpose__input_gpp __gill-sans">
+      <input type="text" (input)="this.userShoppingTarget  = target_input.value" #target_input>
+      <div [class.__display_elem]="activeCurrency==0" class="__active_elem">$</div>
+      <div [class.__display_elem]="activeCurrency==1" class="__active_elem">₽</div>
+      <div [class.__display_elem]="activeCurrency==2" class="__active_elem">€</div>
+      <input type="number" (input)="this.userShoppingTargetPrice  = +target_price_input.value" #target_price_input>
+    </div>
+    <div class="purpose__part_of_income">
+      <!--TODO: add ng-select-->
+      <select name="" id="" (change)="this.changeIncomePart($event)">
+        <option value="0.05">5%</option>
+        <option value="0.1">10%</option>
+        <option value="0.25">25%</option>
+        <option value="0.5">50%</option>
+        <option value="0.75">75%</option>
+        <option value="1">100%</option>
+      </select>
+      {{this.userInvestmentPart * 100}}%
+    </div>
+  </div>
+  <div class="timer__container __container">
+    <div class="timer__header __title">
+      Price
+    </div>
+    <div class="timer__clock_container">
+      <div class="timer__clock_face __active_elem" lang="en-GB">
+        <div>
+          <div
+            style="position: absolute"
+            [@fadeoutTrigger2]="t_trigger.y"
+          >{{timer_string.y}}</div>
+          <div
+            [@fadeinTrigger2]="t_trigger.y"
+          >{{next_timer_string.y}}</div>
+        </div>
+        <div class="__dot">·</div>
+        <div>
+          <div
+            style="position: absolute"
+            [@fadeoutTrigger2]="t_trigger.w"
+          >{{timer_string.w}}</div>
+          <div
+            [@fadeinTrigger2]="t_trigger.w"
+          >{{next_timer_string.w}}</div>
+        </div>
+        <div class="__dot">·</div>
+        <div>
+          <div
+            style="position: absolute"
+            [@fadeoutTrigger2]="t_trigger.d"
+          >{{timer_string.d}}</div>
+          <div
+            [@fadeinTrigger2]="t_trigger.d"
+          >{{next_timer_string.d}}</div>
+        </div>
+        <div class="__dot">·</div>
+        <div>
+          <div
+            style="position: absolute"
+            [@fadeoutTrigger2]="t_trigger.h"
+          >{{timer_string.h}}</div>
+          <div
+            [@fadeinTrigger2]="t_trigger.h"
+          >{{next_timer_string.h}}</div>
+        </div>
+        <div class="__dot">·</div>
+        <div>
+          <div
+            style="position: absolute"
+            [@fadeoutTrigger2]="t_trigger.m"
+          >{{timer_string.m}}</div>
+          <div
+            [@fadeinTrigger2]="t_trigger.m"
+          >{{next_timer_string.m}}</div>
+        </div>
+        <div class="__dot">·</div>
+        <div>
+          <div>
+            <div style="position: absolute">
+              <div
+                style="position: absolute"
+                [@fadeinTrigger]="t_trigger.s"
+              >{{next_timer_string.s}}</div>
+              <div
+                [@fadeinTrigger]="!t_trigger.s"
+              >{{next_timer_string.s}}</div>
+            </div>
+            <div>
+              <div
+                [@fadeoutTrigger]="t_trigger.s"
+                style="position: absolute"
+              >{{timer_string.s}}</div>
+              <div
+                [@fadeoutTrigger]="!t_trigger.s"
+              >{{timer_string.s}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timer__clock_tip">
+        years•weeks•days•hrs•minutes•seconds
+      </div>
+      <div class="timer__start_btn __title __active_elem" *ngIf="isPulseDisabled" >
+        <div (click)="this.beginCalculate()">
+          ♡
+        </div>
+      </div>
+      <div class="timer__start_btn __title __active_elem" *ngIf="!isPulseDisabled">
+        <div (click)="this.beginCalculate()" [@shrinkTrigger]="heartPulse" (@shrinkTrigger.done)="heartPulse = !heartPulse">
+          ♡
+        </div>
+      </div>
+      <div style="display: flex">
+        <div>
+          <button (click)="initTimer()">INIT</button>
+        </div>
+        <div>•</div>
+        <div>
+          <button (click)="testTimerDimension(5)">Y</button>
+        </div>
+        •
+        <div>
+          <button (click)="testTimerDimension(4)">W</button>
+        </div>
+        •
+        <div>
+          <button (click)="testTimerDimension(3)">D</button>
+        </div>
+        •
+        <div>
+          <button (click)="testTimerDimension(2)">H</button>
+        </div>
+        •
+        <div>
+          <button (click)="testTimerDimension(1)">M</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

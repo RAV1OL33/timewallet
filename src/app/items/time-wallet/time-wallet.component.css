@@ -1,0 +1,86 @@
+.__width100{
+ width: 100%;
+}
+.__active_elem{
+  color: #aec93c;
+}
+.__title{
+ text-align: center;
+}
+
+.__container{
+  width: 100%;
+  margin-top: 1.5em;
+}
+.__gill-sans{
+  font-family: 'Gill Sans', sans-serif;
+
+}
+.__display_elem{
+  display: block !important;
+}
+.time-wallet__container{
+  font-size: 1.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin:.5em;
+}
+.income__container{
+
+}
+.income__btn_grp{
+  display: flex;
+}
+.income__btn_grp input{
+  width: 100%;
+}
+.income__additional_btn_grp{
+  display: flex;
+  justify-content: space-between;
+}
+.income_options__income_frequency{
+  display: flex;
+}
+.income_options__currency_option{
+  display: flex;
+}
+.purpose__container{
+}
+.purpose__input_gpp{
+  display: flex;
+  width: 100%;
+}
+.purpose__input_gpp input{
+  width: 45%;
+}
+.purpose__input_gpp div{
+  width: 10%;
+  text-align: center;
+  display: none;
+}
+.purpose__part_of_income{
+
+}
+.timer__container{
+}
+.timer__clock_face{
+  font-family: 'Gill Sans', sans-serif;
+  font-weight: 300;
+  text-shadow: 0 0 5px #aec93c;
+  display: flex;
+  justify-content: center;
+  font-size: 1.3em;
+}
+.timer__clock_face .__dot{
+  /*margin: 0 -3px;*/
+}
+.timer__clock_tip{
+  text-align: center;
+  font-size: 1rem;
+}
+.timer__start_btn{
+  text-shadow: 0 0 5px #aec93c;
+  font-size: 5em;
+
+}

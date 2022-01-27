@@ -1,0 +1,9 @@
+.body_container{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  max-width: 804px;
+  margin: auto;
+  background: #272f3c;
+  color: #f9fdff;
+}
