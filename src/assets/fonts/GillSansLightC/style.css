@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Gill Sans';
+    src: local('Gill Sans Light'), local('Gill-Sans-Light'),
+        url('GillSansLightC.woff2') format('woff2'),
+        url('GillSansLightC.woff') format('woff'),
+        url('GillSansLightC.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+  }

@@ -1,86 +1,184 @@
-.__width100{
- width: 100%;
+.__width100 {
+  width: 100%;
 }
-.__active_elem{
-  color: #aec93c;
+.__disabled{
+  opacity: .5;
+  cursor: default;
 }
-.__title{
- text-align: center;
+.__active_elem {
+  color: var(--text-active-color);
+}
+.flex-content{
+  width: 100%;
+  flex: 1 1 auto;
+}
+.__title {
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
 }
 
-.__container{
+.__container {
   width: 100%;
-  margin-top: 1.5em;
+  margin: .5em 0;
+
 }
-.__gill-sans{
+
+.__gill-sans {
   font-family: 'Gill Sans', sans-serif;
 
 }
-.__display_elem{
+
+.__display_elem {
   display: block !important;
 }
-.time-wallet__container{
+
+.time-wallet__container {
   font-size: 1.5em;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin:.5em;
+  padding: .5em;
+  /*height: 100%;*/
+  flex: auto;
+  background: var(--body-color);
 }
-.income__container{
+
+.income__container {
 
 }
-.income__btn_grp{
+
+.income__btn_grp {
   display: flex;
+  height: .8em;
 }
-.income__btn_grp input{
+
+.income__btn_grp input {
   width: 100%;
 }
-.income__additional_btn_grp{
+
+.income__additional_btn_grp {
   display: flex;
   justify-content: space-between;
+  color: var(--text-sub-color);
+  margin-top: .1em;
+  align-items: center;
 }
-.income_options__income_frequency{
+
+.income_options__income_frequency {
   display: flex;
+  font-size: 1.2rem;
+  align-items: center;
+  cursor: pointer;
 }
-.income_options__currency_option{
+
+.income_options__currency_option {
   display: flex;
+  gap: .5rem;
+  cursor: pointer;
+  align-items: center;
+  font-size: 1.2rem;
 }
-.purpose__container{
+
+.purpose__container {
 }
-.purpose__input_gpp{
+
+.purpose__options {
+  display: flex;
+  font-size: 1.2rem;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5em 0;
+}
+
+.purpose__work_time {
+  color: var(--text-sub-color);
+  cursor: pointer;
+}
+
+.purpose__input_gpp {
   display: flex;
   width: 100%;
 }
-.purpose__input_gpp input{
+
+.purpose__input_gpp input {
   width: 45%;
 }
-.purpose__input_gpp div{
+
+.purpose__input_gpp div {
   width: 10%;
   text-align: center;
   display: none;
 }
-.purpose__part_of_income{
 
+.purpose__part_of_income select {
+  background: #272f3c;
+  height: 40px;
+  color: var(--text-main-color);
 }
-.timer__container{
+
+.purpose__work_time {
+  display: flex;
 }
-.timer__clock_face{
+
+.timer__container {
+}
+.timer__clock_face {
   font-family: 'Gill Sans', sans-serif;
   font-weight: 300;
-  text-shadow: 0 0 5px #aec93c;
+  text-shadow: 0 0 5px var(--text-active-color);
   display: flex;
   justify-content: center;
   font-size: 1.3em;
 }
-.timer__clock_face .__dot{
+
+.timer__clock_face .__dot {
   /*margin: 0 -3px;*/
 }
-.timer__clock_tip{
+
+.timer__clock_tip {
   text-align: center;
   font-size: 1rem;
+  color: var(--text-sub-color);
 }
-.timer__start_btn{
-  text-shadow: 0 0 5px #aec93c;
-  font-size: 5em;
 
+.timer__start_btn {
+  cursor: pointer;
+  text-shadow: 0 0 5px var(--text-active-color);
+  height: 4em;
+  width: 4em;
+  margin: -15px auto auto;
+}
+.timer__start_btn div{
+  font-size: 4em;
+}
+.wallet_options__thank_us{
+  text-align: center;
+  font-weight: 300;
+  font-size: 1rem;
+}
+.wallet_options__btn_grp{
+  margin-top: .8em;
+  display: flex;
+  justify-content: space-around;
+  font-size: .7em;
+  font-weight: 300;
+  align-items: center;
+}
+.wallet_options__btn_grp .btn_description{
+
+}
+.wallet_options__btn_grp .lang_trigger{
+  display: flex;
+  color: var(--text-sub-color);
+  font-size: 1.5em;
+}
+.btn_icon i{
+  color: var(--text-active-color);
+  font-size: 2em;
+}
+.wallet_options__btn_grp .__btn{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }

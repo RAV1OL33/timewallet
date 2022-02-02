@@ -1,8 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~bootstrap-icons/font/bootstrap-icons.css";
 html,
 body {
   height: 100%;
   margin: 0;
-  background: black;
+  background: var(--background-color);
   font-family: 'Yanone Kaffeesatz', sans-serif;
+}
+:root{
+  --background-color: black;
+  --body-color: #272f3c;
+  --text-main-color: #f9fdff;
+  --text-sub-color: #94979e;
+  --text-active-color: #aec93c;
+}
+@media (max-width: 320px){
+  body{
+    font-size: 16px;
+  }
+}
+@media(min-width: 321px) and (max-width: 375px){
+  body{
+    font-size: 22px;
+  }
+}
+@media (min-width: 376px){
+  body{
+    font-size: 24px;
+  }
 }
