@@ -74,11 +74,21 @@ export class TimeWalletComponent implements OnInit {
     {name: 'd', format: 1}, {name: 'w', format: 2}, {name: 'y', format: 4}
   ]
   heartPulse = true;
-  //time trigger
-  t_trigger = {s: true, m: true, h: true, d: true, w: true, y: true};
+  /** timer - contain timer value
+   *  t_trigger - serves to switch each timer dimension animation
+   *  timer_string && timer_next_string - contain curr and next clockface value
+   *
+   *  f_.... - contains same for 'fill' animation for clockface
+   */
   timer = {s: 0, m: 0, h: 0, d: 0, w: 0, y: 0}
+  t_trigger = {s: true, m: true, h: true, d: true, w: true, y: true};
   timer_string = {s: '00', m: '00', h: '00', d: '0', w: '00', y: '0000'};
   next_timer_string = {s: '00', m: '00', h: '00', d: '0', w: '00', y: '0000'};
+
+  f_clockface = {s: 0, m: 0, h: 0, d: 0, w: 0, y: 0};
+  f_trigger = {s: true, m: true, h: true, d: true, w: true, y: true};
+  f_clockface_string = {s: '00', m: '00', h: '00', d: '0', w: '00', y: '0000'};
+  f_clockface_next_string = {s: '00', m: '00', h: '00', d: '0', w: '00', y: '0000'};
 
   isPulseDisabled = true;
   isInputDisabled = false;
@@ -91,7 +101,7 @@ export class TimeWalletComponent implements OnInit {
   timeToBuy: number = 0;
   bulk_userProfile: any = {};
   userProfile: UserProfile = {
-    income: null,
+    income: 0,
     incomeFrequency: 0,
     incomeCurrency: 0,
     purposeName: '',
@@ -101,12 +111,9 @@ export class TimeWalletComponent implements OnInit {
     allTimeWork: true,
     //timerFace: this.timer_string,
     //timerValue: this.timer,
-    userLang: true
+    userLang: false
   }
-  f_clockface = {s: 0, m: 0, h: 0, d: 0, w: 0, y: 0}
-  f_clockface_string = {s: '00', m: '00', h: '00', d: '0', w: '00', y: '0000'}
-  f_clockface_next_string = {s: '00', m: '00', h: '00', d: '0', w: '00', y: '0000'}
-  f_clockface_trigger = true
+
   constructor() {
   }
 
@@ -119,7 +126,7 @@ export class TimeWalletComponent implements OnInit {
     if (json_data != '') {
 
       this.bulk_userProfile = Object.assign({}, this.userProfile);
-      this.userProfile = json_data == '' ? this.userProfile : JSON.parse(json_data);
+      this.userProfile = JSON.parse(json_data);
 
       //this.timer = this.userProfile.timerValue;
       //this.timer_string = Object.assign({}, this.userProfile.timerFace);
@@ -127,61 +134,77 @@ export class TimeWalletComponent implements OnInit {
       this.userProfile.timeToBuy = this.userProfile.timeToBuy - time_dif;
       this.beginCalculate();
     }
+    this.locale = this.userProfile.userLang ? EnLocale : RuLocale;
   }
 
-  fillAnimation() {
+  formatNumberInput(val: any) {
+    return val.toString()
+      .replace(/\s/g, '')
+      .replace(/\D/g, '')
+      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, " ");
+  }
+  updateInputField(income_val: string, field: any) {
+    //@ts-ignore
+    this.userProfile[field] = +(income_val.toString().replace(/\s/g, '').replace(/\D/g, ''));
+    this.updateClockFace();
+  }
+
+  fillClockFace() {
     this.f_clockface = {s: 0, m: 0, h: 0, d: 0, w: 0, y: 0};
-    let i = 0
+    this.f_trigger = {s: false, m: false, h: false, d: false, w: false, y: false}
     this.fillAnimation$ = interval(10).subscribe(x => {
-      i++
+      // INF∞
       //TODO: refactor this
-      if(this.f_clockface.s != this.timer.s){
+      if (this.f_clockface.s != this.timer.s) {
         this.f_clockface_string.s = `${this.f_clockface.s}`.padStart(2, '0');
         this.f_clockface.s++
+        if (this.f_clockface.s > 60) this.f_clockface.s = 0
         this.f_clockface_next_string.s = `${this.f_clockface.s}`.padStart(2, '0');
-      }
-      if(this.f_clockface.m != this.timer.m){
+      } else this.f_trigger.s = true
+      if (this.f_clockface.m != this.timer.m) {
         this.f_clockface_string.m = `${this.f_clockface.m}`.padStart(2, '0');
         this.f_clockface.m++
+        if (this.f_clockface.m > 60) this.f_clockface.m = 0
         this.f_clockface_next_string.m = `${this.f_clockface.m}`.padStart(2, '0');
-      }
-      if(this.f_clockface.h != this.timer.h){
+      } else this.f_trigger.m = true
+      if (this.f_clockface.h != this.timer.h) {
         this.f_clockface_string.h = `${this.f_clockface.h}`.padStart(2, '0');
         this.f_clockface.h++
+        if (this.f_clockface.h > 60) this.f_clockface.h = 0
         this.f_clockface_next_string.h = `${this.f_clockface.h}`.padStart(2, '0');
-      }
-      if(this.f_clockface.d != this.timer.d){
+      } else this.f_trigger.h = true
+      if (this.f_clockface.d != this.timer.d) {
         this.f_clockface_string.d = `${this.f_clockface.d}`;
         this.f_clockface.d++
+        if (this.f_clockface.d > 7) this.f_clockface.d = 0
         this.f_clockface_next_string.d = `${this.f_clockface.d}`;
-      }
-      if(this.f_clockface.w != this.timer.w){
+      } else this.f_trigger.d = true
+      if (this.f_clockface.w != this.timer.w) {
         this.f_clockface_string.w = `${this.f_clockface.w}`.padStart(2, '0');
         this.f_clockface.w++
+        if (this.f_clockface.w > 52) this.f_clockface.w = 0
         this.f_clockface_next_string.w = `${this.f_clockface.w}`.padStart(2, '0');
-      }
-      if(this.f_clockface.y != this.timer.y){
+      } else this.f_trigger.w = true
+      if (this.f_clockface.y != this.timer.y && this.f_clockface.y < this.timer.y) {
         this.f_clockface_string.y = `${this.f_clockface.y}`.padStart(4, '0');
-        this.f_clockface.y++
+        this.f_clockface.y = this.f_clockface.y + (this.timer.y - this.f_clockface.y > 100 ? 111 : 1)
+        if (this.f_clockface.y > 9999) return
         this.f_clockface_next_string.y = `${this.f_clockface.y}`.padStart(4, '0');
-      }
-      if (i>400) this.fillAnimation$.unsubscribe()
+      } else this.f_trigger.y = true
+      if (this.f_trigger.s && this.f_trigger.m && this.f_trigger.h && this.f_trigger.d && this.f_trigger.w && this.f_trigger.y) this.fillAnimation$.unsubscribe();
     });
   }
 
+  updateClockFace() {
+    this.isFormDirty = true;
+    console.log(this.userProfile)
+    this.initTimer();
+    this.fillClockFace();
+  }
 
   changeLocale() {
     this.userProfile.userLang = !this.userProfile.userLang;
     this.locale = this.userProfile.userLang ? EnLocale : RuLocale;
-  }
-
-  calculateTimeDiff(t_ind: number) {
-    // @ts-ignore
-    this.timer_string[this.t_dimens[t_ind].name] = `${this.t_trigger[this.t_dimens[t_ind].name] ? this.timer[this.t_dimens[t_ind].name] : this.timer[this.t_dimens[t_ind].name] - 1}`.padStart(this.t_dimens[t_ind].format, '0');
-    // @ts-ignore
-    this.timer[this.t_dimens[t_ind].name]--;
-    // @ts-ignore
-    this.next_timer_string[this.t_dimens[t_ind].name] = `${this.t_trigger[this.t_dimens[t_ind].name] ? this.timer[this.t_dimens[t_ind].name] : this.timer[this.t_dimens[t_ind].name] + 1}`.padStart(this.t_dimens[t_ind].format, '0');
   }
 
   testTimerDimension(index: number) {
@@ -190,19 +213,28 @@ export class TimeWalletComponent implements OnInit {
     this.t_trigger[this.t_dimens[index].name] = !this.t_trigger[this.t_dimens[index].name];
   }
 
-  changeIncomePart(event: any) {
-    this.userProfile.putOffPercent = event.target.value;
-    this.isFormDirty = true;
-  }
-
   changeIncomeFrequency(i: number) {
     this.userProfile.incomeFrequency = i;
-    this.isFormDirty = true;
+    this.updateClockFace();
+  }
+
+  changeIncomePart(event: any) {
+    this.userProfile.putOffPercent = event.target.value;
+    this.updateClockFace();
   }
 
   changeWorkTime() {
     this.userProfile.allTimeWork = !this.userProfile.allTimeWork;
-    this.isFormDirty = true;
+    this.updateClockFace();
+  }
+
+  private calculateTimeDiff(t_ind: number) {
+    // @ts-ignore
+    this.timer_string[this.t_dimens[t_ind].name] = `${this.t_trigger[this.t_dimens[t_ind].name] ? this.timer[this.t_dimens[t_ind].name] : this.timer[this.t_dimens[t_ind].name] - 1}`.padStart(this.t_dimens[t_ind].format, '0');
+    // @ts-ignore
+    this.timer[this.t_dimens[t_ind].name]--;
+    // @ts-ignore
+    this.next_timer_string[this.t_dimens[t_ind].name] = `${this.t_trigger[this.t_dimens[t_ind].name] ? this.timer[this.t_dimens[t_ind].name] : this.timer[this.t_dimens[t_ind].name] + 1}`.padStart(this.t_dimens[t_ind].format, '0');
   }
 
   private timerUpdate() {
@@ -264,6 +296,11 @@ export class TimeWalletComponent implements OnInit {
   }
 
   initTimer() {
+    if (this.isFormDirty) {
+      this.moneyPerSecond = this.userProfile.income /
+        (this.userProfile.allTimeWork ? this.payingInterval[this.userProfile.incomeFrequency] : this.workTimePayingInterval[this.userProfile.incomeFrequency]);
+      this.userProfile.timeToBuy = this.userProfile.purposePrice / (this.moneyPerSecond * this.userProfile.putOffPercent);
+    }
     this.timer.s = +(this.userProfile.timeToBuy % 60).toFixed();
     this.timer_string.s = `${this.timer.s}`.padStart(2, '0');
     this.next_timer_string.s = `${this.timer.s}`.padStart(2, '0');
@@ -289,12 +326,14 @@ export class TimeWalletComponent implements OnInit {
     this.next_timer_string.w = `${this.timer.w}`.padStart(2, '0');
 
     this.timer.y = Math.floor(weeks / 52);
+    if (this.timer.y > 9999) this.timer.y = 9999;
     this.timer_string.y = `${this.timer.y}`.padStart(4, '0');
     this.next_timer_string.y = `${this.timer.y}`.padStart(4, '0');
   }
 
   pauseTimer() {
-    this.heartPulse = !this.heartPulse;
+    //this.heartPulse = !this.heartPulse;
+    this.isPulseDisabled = true;
     this.isInputDisabled = !this.isInputDisabled;
     if (this.isInputDisabled)
       this.beginCalculate();
@@ -303,13 +342,7 @@ export class TimeWalletComponent implements OnInit {
   }
 
   beginCalculate() {
-    if (this.isFormDirty) {
-      this.moneyPerSecond = this.userProfile.income /
-        (this.userProfile.allTimeWork?this.payingInterval[this.userProfile.incomeFrequency]:this.workTimePayingInterval[this.userProfile.incomeFrequency]);
-      console.log(this.moneyPerSecond)
-      this.userProfile.timeToBuy = this.userProfile.purposePrice / (this.moneyPerSecond * this.userProfile.putOffPercent);
 
-    }
     this.initTimer();
     this.isPulseDisabled = false;
     this.isInputDisabled = true;

@@ -4,33 +4,46 @@
       <div class="income__header __title">
         {{locale.incomeTitle}}
       </div>
-      <div class="income__btn_grp">
-        <button [disabled]="isInputDisabled">-</button>
-        <input type="number" (input)="userProfile.income= +income_input.value; isFormDirty=true"
+      <div class="income__btn_grp" >
+        <!--<button [disabled]="isInputDisabled">-</button>-->
+        <!--<input class="wallet-input" type="number"
+               (input)="userProfile.income = +income_input.value; updateClockFace()"
                [value]="userProfile.income"
+               #income_input [disabled]="isInputDisabled">-->
+        <input class="wallet-input" type="text" [class.__disabled]="isInputDisabled"
+               (input)="updateInputField(income_input.value, 'income'); income_input.value = formatNumberInput(income_input.value);"
+               [value]="formatNumberInput(userProfile.income)"
                #income_input [disabled]="isInputDisabled">
-        <button [disabled]="isInputDisabled">+</button>
+        <!--<button [disabled]="isInputDisabled">+</button>-->
       </div>
-      <div class="income__additional_btn_grp" >
+      <div class="income__additional_btn_grp">
         <div class="income_options" [class.__disabled]="isInputDisabled">
           <div class="income_options__income_frequency">
-            <div (click)="!isInputDisabled&&changeIncomeFrequency(0)" [class.__active_elem]="userProfile.incomeFrequency==0">
+            <div class="__active_elem" style="margin-right: 2px">
+              {{locale.incomeFrequency.in}}
+            </div>
+            <div (click)="!isInputDisabled&&changeIncomeFrequency(0)"
+                 [class.__active_elem]="userProfile.incomeFrequency==0">
               {{locale.incomeFrequency.h}}
             </div>
             •
-            <div (click)="!isInputDisabled&&changeIncomeFrequency(1)" [class.__active_elem]="userProfile.incomeFrequency==1">
+            <div (click)="!isInputDisabled&&changeIncomeFrequency(1)"
+                 [class.__active_elem]="userProfile.incomeFrequency==1">
               {{locale.incomeFrequency.d}}
             </div>
             •
-            <div (click)="!isInputDisabled&&changeIncomeFrequency(2)" [class.__active_elem]="userProfile.incomeFrequency==2">
+            <div (click)="!isInputDisabled&&changeIncomeFrequency(2)"
+                 [class.__active_elem]="userProfile.incomeFrequency==2">
               {{locale.incomeFrequency.w}}
             </div>
             •
-            <div (click)="!isInputDisabled&&changeIncomeFrequency(3)" [class.__active_elem]="userProfile.incomeFrequency==3">
+            <div (click)="!isInputDisabled&&changeIncomeFrequency(3)"
+                 [class.__active_elem]="userProfile.incomeFrequency==3">
               {{locale.incomeFrequency.m}}
             </div>
             •
-            <div (click)="!isInputDisabled&&changeIncomeFrequency(4)" [class.__active_elem]="userProfile.incomeFrequency==4">
+            <div (click)="!isInputDisabled&&changeIncomeFrequency(4)"
+                 [class.__active_elem]="userProfile.incomeFrequency==4">
               {{locale.incomeFrequency.y}}
             </div>
           </div>
@@ -47,13 +60,18 @@
         {{locale.purposeTitle}}
       </div>
       <div class="purpose__input_gpp __gill-sans">
-        <input type="text" [value]="userProfile.purposeName"
-               (input)="userProfile.purposeName  = target_input.value; isFormDirty = true" #target_input [disabled]="isInputDisabled">
+        <input class="wallet-input" type="text"  [class.__disabled]="isInputDisabled"
+               (input)="userProfile.purposeName  = target_input.value; isFormDirty = true"
+               [value]="userProfile.purposeName"
+               #target_input [disabled]="isInputDisabled">
         <div [class.__display_elem]="userProfile.incomeCurrency==0" class="__active_elem">$</div>
         <div [class.__display_elem]="userProfile.incomeCurrency==1" class="__active_elem">₽</div>
         <div [class.__display_elem]="userProfile.incomeCurrency==2" class="__active_elem">€</div>
-        <input type="number" [value]="userProfile.purposePrice"
-               (input)="userProfile.purposePrice  = +target_price_input.value; isFormDirty = true" #target_price_input [disabled]="isInputDisabled">
+
+        <input class="wallet-input" type="text" [class.__disabled]="isInputDisabled"
+               (input)="updateInputField(target_price_input.value, 'purposePrice'); target_price_input.value = formatNumberInput(target_price_input.value);"
+               [value]="formatNumberInput(userProfile.purposePrice)"
+               #target_price_input [disabled]="isInputDisabled">
       </div>
       <div class="purpose__options">
         <div class="purpose__part_of_income">
@@ -71,69 +89,228 @@
           </select>
         </div>
         <div class="purpose__work_time" [class.__disabled]="isInputDisabled">
-          <div (click)="!isInputDisabled&&changeWorkTime()" [class.__active_elem]="!userProfile.allTimeWork">{{locale.purposeWorkTime.w}}</div>
+          <div (click)="!isInputDisabled&&changeWorkTime()"
+               [class.__active_elem]="!userProfile.allTimeWork">{{locale.purposeWorkTime.w}}</div>
           •
-          <div (click)="!isInputDisabled&&changeWorkTime()" [class.__active_elem]="userProfile.allTimeWork">{{locale.purposeWorkTime.a}}</div>
+          <div (click)="!isInputDisabled&&changeWorkTime()"
+               [class.__active_elem]="userProfile.allTimeWork">{{locale.purposeWorkTime.a}}</div>
         </div>
       </div>
     </div>
     <div class="timer__container __container">
-      <div class="timer__header __title">
-        {{locale.timerTitle}}
-      </div>
-      <div class="timer__clock_container">
-        <div class="timer__clock_face __active_elem" lang="en-GB">
-          <div>
-            <div
-              style="position: absolute"
-              [@fadeoutTrigger2]="t_trigger.y"
-            >{{timer_string.y}}</div>
-            <div
-              [@fadeinTrigger2]="t_trigger.y"
-            >{{next_timer_string.y}}</div>
+      <div class="timer__body">
+        <div class="timer__header __title">
+          {{locale.timerTitle}}
+        </div>
+        <div class="timer__clock_container">
+          <div class="timer__clock_face __active_elem">
+            <div>
+              <div *ngIf="!f_trigger.y">
+                <div style="position: absolute">{{f_clockface_string.y}}</div>
+                <div>{{f_clockface_next_string.y}}</div>
+              </div>
+              <div *ngIf="f_trigger.y">
+                <div
+                  style="position: absolute"
+                  [@fadeoutTrigger2]="t_trigger.y"
+                >{{timer_string.y}}</div>
+                <div
+                  [@fadeinTrigger2]="t_trigger.y"
+                >{{next_timer_string.y}}</div>
+              </div>
+              <div class="timer__clock_tip">
+                {{locale.timerDimensions.y}}
+              </div>
+            </div>
+            ·
+            <div>
+              <div *ngIf="!f_trigger.w">
+                <div style="position: absolute">{{f_clockface_next_string.w}}</div>
+                <div>{{f_clockface_string.w}}</div>
+              </div>
+              <div *ngIf="f_trigger.w">
+                <div
+                  style="position: absolute"
+                  [@fadeoutTrigger2]="t_trigger.w"
+                >{{timer_string.w}}</div>
+                <div
+                  [@fadeinTrigger2]="t_trigger.w"
+                >{{next_timer_string.w}}</div>
+              </div>
+              <div class="timer__clock_tip">
+                {{locale.timerDimensions.w}}
+              </div>
+            </div>
+            ·
+            <div>
+              <div *ngIf="!f_trigger.d">
+                <div style="position: absolute">{{f_clockface_next_string.d}}</div>
+                <div>{{f_clockface_string.d}}</div>
+              </div>
+              <div *ngIf="f_trigger.d">
+                <div
+                  style="position: absolute"
+                  [@fadeoutTrigger2]="t_trigger.d"
+                >{{timer_string.d}}</div>
+                <div
+                  [@fadeinTrigger2]="t_trigger.d"
+                >{{next_timer_string.d}}</div>
+              </div>
+              <div class="timer__clock_tip">
+                {{locale.timerDimensions.d}}
+              </div>
+            </div>
+            ·
+            <div>
+              <div *ngIf="!f_trigger.h">
+                <div style="position: absolute">{{f_clockface_next_string.h}}</div>
+                <div
+                >{{f_clockface_string.h}}</div>
+              </div>
+              <div *ngIf="f_trigger.h">
+                <div
+                  style="position: absolute"
+                  [@fadeoutTrigger2]="t_trigger.h"
+                >{{timer_string.h}}</div>
+                <div
+                  [@fadeinTrigger2]="t_trigger.h"
+                >{{next_timer_string.h}}</div>
+              </div>
+              <div class="timer__clock_tip">
+                {{locale.timerDimensions.h}}
+              </div>
+            </div>
+            ·
+            <div>
+              <div *ngIf="!f_trigger.m">
+                <div
+                  style="position: absolute"
+                >{{f_clockface_next_string.m}}</div>
+                <div
+                >{{f_clockface_string.m}}</div>
+              </div>
+              <div *ngIf="f_trigger.m">
+                <div
+                  style="position: absolute"
+                  [@fadeoutTrigger2]="t_trigger.m"
+                >{{timer_string.m}}</div>
+                <div
+                  [@fadeinTrigger2]="t_trigger.m"
+                >{{next_timer_string.m}}</div>
+              </div>
+              <div class="timer__clock_tip">
+                {{locale.timerDimensions.m}}
+              </div>
+            </div>
+            ·
+            <div>
+              <div *ngIf="!f_trigger.s">
+                <div
+                  style="position: absolute"
+                >{{f_clockface_next_string.s}}</div>
+                <div
+                >{{f_clockface_string.s}}</div>
+              </div>
+              <div *ngIf="f_trigger.s">
+                <div style="position: absolute">
+                  <div
+                    style="position: absolute"
+                    [@fadeinTrigger]="t_trigger.s"
+                  >{{next_timer_string.s}}</div>
+                  <div
+                    [@fadeinTrigger]="!t_trigger.s"
+                  >{{next_timer_string.s}}</div>
+                </div>
+                <div>
+                  <div
+                    [@fadeoutTrigger]="t_trigger.s"
+                    style="position: absolute"
+                  >{{timer_string.s}}</div>
+                  <div
+                    [@fadeoutTrigger]="!t_trigger.s"
+                  >{{timer_string.s}}</div>
+                </div>
+              </div>
+              <div class="timer__clock_tip">
+                {{locale.timerDimensions.s}}
+              </div>
+            </div>
           </div>
-          <div class="__dot">·</div>
-          <div>
-            <div
-              style="position: absolute"
-              [@fadeoutTrigger2]="t_trigger.w"
-            >{{timer_string.w}}</div>
-            <div
-              [@fadeinTrigger2]="t_trigger.w"
-            >{{next_timer_string.w}}</div>
+
+          <!--♡-->
+          <div class="timer__start_btn __title __active_elem" *ngIf="isPulseDisabled" style="    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1em;">
+            <!--TODO CREATE CLASSES -->
+            <div (click)="userProfile.purposePrice>0 && userProfile.income>0 && this.beginCalculate()">
+              <div style="font-size: 1em;">
+                <i class="bi bi-heart" style="position: absolute"></i>
+                <i class="bi bi-play" style="margin-left: 18px; font-size: 0.9em;"></i>
+              </div>
+            </div>
           </div>
-          <div class="__dot">·</div>
-          <div>
-            <div
-              style="position: absolute"
-              [@fadeoutTrigger2]="t_trigger.d"
-            >{{timer_string.d}}</div>
-            <div
-              [@fadeinTrigger2]="t_trigger.d"
-            >{{next_timer_string.d}}</div>
+          <div class="timer__start_btn __title __active_elem" *ngIf="!isPulseDisabled" style="padding-top: 1em;">
+            <div (click)="this.pauseTimer()" [@shrinkTrigger]="heartPulse" (@shrinkTrigger.done)="heartPulse=!heartPulse">
+              <div style="font-size: 1em;">
+                <i class="bi bi-heart" style="position: absolute"></i>
+                <i class="bi bi-pause" style="margin-left: 5px; font-size: 0.9em;"></i>
+              </div>
+            </div>
           </div>
-          <div class="__dot">·</div>
-          <div>
-            <div
-              style="position: absolute"
-              [@fadeoutTrigger2]="t_trigger.h"
-            >{{timer_string.h}}</div>
-            <div
-              [@fadeinTrigger2]="t_trigger.h"
-            >{{next_timer_string.h}}</div>
-          </div>
-          <div class="__dot">·</div>
-          <div>
-            <div
-              style="position: absolute"
-              [@fadeoutTrigger2]="t_trigger.m"
-            >{{timer_string.m}}</div>
-            <div
-              [@fadeinTrigger2]="t_trigger.m"
-            >{{next_timer_string.m}}</div>
-          </div>
-          <div class="__dot">·</div>
-          <div>
+          <!--
+          OLD CLOCKFACE
+          <div class="timer__clock_face __active_elem" lang="en-GB">
+            <div>
+              <div
+                style="position: absolute"
+                [@fadeoutTrigger2]="t_trigger.y"
+              >{{timer_string.y}}</div>
+              <div
+                [@fadeinTrigger2]="t_trigger.y"
+              >{{next_timer_string.y}}</div>
+            </div>
+            <div class="__dot">·</div>
+            <div>
+              <div
+                style="position: absolute"
+                [@fadeoutTrigger2]="t_trigger.w"
+              >{{timer_string.w}}</div>
+              <div
+                [@fadeinTrigger2]="t_trigger.w"
+              >{{next_timer_string.w}}</div>
+            </div>
+            <div class="__dot">·</div>
+            <div>
+              <div
+                style="position: absolute"
+                [@fadeoutTrigger2]="t_trigger.d"
+              >{{timer_string.d}}</div>
+              <div
+                [@fadeinTrigger2]="t_trigger.d"
+              >{{next_timer_string.d}}</div>
+            </div>
+            <div class="__dot">·</div>
+            <div>
+              <div
+                style="position: absolute"
+                [@fadeoutTrigger2]="t_trigger.h"
+              >{{timer_string.h}}</div>
+              <div
+                [@fadeinTrigger2]="t_trigger.h"
+              >{{next_timer_string.h}}</div>
+            </div>
+            <div class="__dot">·</div>
+            <div>
+              <div
+                style="position: absolute"
+                [@fadeoutTrigger2]="t_trigger.m"
+              >{{timer_string.m}}</div>
+              <div
+                [@fadeinTrigger2]="t_trigger.m"
+              >{{next_timer_string.m}}</div>
+            </div>
+            <div class="__dot">·</div>
             <div>
               <div style="position: absolute">
                 <div
@@ -154,95 +331,34 @@
                 >{{timer_string.s}}</div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="timer__clock_tip">
-          {{locale.timerDimensionsTip}}
-        </div>
-        <div class="timer__start_btn __title __active_elem" *ngIf="isPulseDisabled">
-          <div (click)="userProfile.purposePrice>0 && userProfile.income>0 && this.beginCalculate()">
-            ♡
-          </div>
-        </div>
-        <div class="timer__start_btn __title __active_elem" *ngIf="!isPulseDisabled">
-          <div (click)="this.pauseTimer()" [@shrinkTrigger]="heartPulse"
-               (@shrinkTrigger.done)="heartPulse = !heartPulse">
-            ♡
-          </div>
-        </div>
-
-        <div>
-          <div>
-            <div style="position: absolute">
-              <div
-                style="position: absolute"
-                [@fadeinTrigger]="f_clockface_trigger"
-              >{{f_clockface_next_string.y}}</div>
-              <div
-                [@fadeinTrigger]="!f_clockface_trigger"
-              >{{f_clockface_next_string.y}}</div>
-            </div>
+          </div>-->
+          <div style="display: flex" *ngIf="false">
+            {{isFormDirty}}
             <div>
-              <div
-                [@fadeoutTrigger]="f_clockface_trigger"
-                style="position: absolute"
-              >{{f_clockface_string.y}}</div>
-              <div
-                [@fadeoutTrigger]="!f_clockface_trigger"
-              >{{f_clockface_string.y}}</div>
+              <button (click)="initTimer()">INIT</button>
+              <button (click)="heartPulse = false">hp</button>
+              <button (click)="isInputDisabled = !isInputDisabled">input {{isInputDisabled}}</button>
             </div>
-          </div>
-
-          <div>
-            <div style="position: absolute">
-              <div
-                style="position: absolute"
-                [@fadeinTrigger]="f_clockface_trigger"
-              >{{f_clockface_next_string.s}}</div>
-              <div
-                [@fadeinTrigger]="!f_clockface_trigger"
-              >{{f_clockface_next_string.s}}</div>
-            </div>
+            <div>•</div>
             <div>
-              <div
-                [@fadeoutTrigger]="f_clockface_trigger"
-                style="position: absolute"
-              >{{f_clockface_string.s}}</div>
-              <div
-                [@fadeoutTrigger]="!f_clockface_trigger"
-              >{{f_clockface_string.s}}</div>
+              <button (click)="testTimerDimension(5)">Y</button>
             </div>
-          </div>
-
-        </div>
-        <button (click)="fillAnimation()">test</button>
-        <button (click)="fillAnimation()">init timer</button>
-        <div style="display: flex" *ngIf="false">
-          {{isFormDirty}}
-          <div>
-            <button (click)="initTimer()">INIT</button>
-            <button (click)="heartPulse = false">hp</button>
-            <button (click)="isInputDisabled = !isInputDisabled">input {{isInputDisabled}}</button>
-          </div>
-          <div>•</div>
-          <div>
-            <button (click)="testTimerDimension(5)">Y</button>
-          </div>
-          •
-          <div>
-            <button (click)="testTimerDimension(4)">W</button>
-          </div>
-          •
-          <div>
-            <button (click)="testTimerDimension(3)">D</button>
-          </div>
-          •
-          <div>
-            <button (click)="testTimerDimension(2)">H</button>
-          </div>
-          •
-          <div>
-            <button (click)="testTimerDimension(1)">M</button>
+            •
+            <div>
+              <button (click)="testTimerDimension(4)">W</button>
+            </div>
+            •
+            <div>
+              <button (click)="testTimerDimension(3)">D</button>
+            </div>
+            •
+            <div>
+              <button (click)="testTimerDimension(2)">H</button>
+            </div>
+            •
+            <div>
+              <button (click)="testTimerDimension(1)">M</button>
+            </div>
           </div>
         </div>
       </div>
@@ -272,15 +388,9 @@
         <div class="btn_description">{{locale.textUsBtn}}</div>
       </div>
       <div class="lang_trigger" (click)="changeLocale()">
-        <div
-          [class.__active_elem]="!userProfile.userLang"
-        >RU
-        </div>
+        <div [class.__active_elem]="!userProfile.userLang">RU</div>
         /
-        <div
-          [class.__active_elem]="userProfile.userLang"
-        >EN
-        </div>
+        <div [class.__active_elem]="userProfile.userLang">EN</div>
       </div>
     </div>
   </div>

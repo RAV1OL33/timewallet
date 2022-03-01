@@ -15,7 +15,7 @@
 .__title {
   text-align: center;
   text-transform: uppercase;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
 }
 
 .__container {
@@ -23,7 +23,17 @@
   margin: .5em 0;
 
 }
-
+.wallet-input{
+  height: 2em;
+  text-align: center;
+  font-size: 1rem;
+  background: #364563;
+  color: var(--text-active-color);
+  border: 1px solid var(--text-active-color);
+  /* border: none; */
+  box-shadow: 0 0 4px 2px;
+  text-shadow: 0 0 5px var(--text-active-color);
+}
 .__gill-sans {
   font-family: 'Gill Sans', sans-serif;
 
@@ -50,7 +60,7 @@
 
 .income__btn_grp {
   display: flex;
-  height: .8em;
+  height: 100%;
 }
 
 .income__btn_grp input {
@@ -61,7 +71,7 @@
   display: flex;
   justify-content: space-between;
   color: var(--text-sub-color);
-  margin-top: .1em;
+  margin-top: .5em;
   align-items: center;
 }
 
@@ -122,6 +132,13 @@
 }
 
 .timer__container {
+  margin: 0;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.timer__body{
 }
 .timer__clock_face {
   font-family: 'Gill Sans', sans-serif;
@@ -138,7 +155,7 @@
 
 .timer__clock_tip {
   text-align: center;
-  font-size: 1rem;
+  font-size: .8rem;
   color: var(--text-sub-color);
 }
 

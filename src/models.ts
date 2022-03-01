@@ -1,6 +1,7 @@
 export interface LangInterface {
   incomeTitle: string;
   incomeFrequency:{
+    in:string;
     h:string;
     d:string;
     w:string;
@@ -15,6 +16,14 @@ export interface LangInterface {
   };
   timerTitle: string;
   timerDimensionsTip: string;
+  timerDimensions:{
+    s:string;
+    m:string;
+    h:string;
+    d:string;
+    w:string;
+    y:string;
+  };
   timerThankUsText: string;
   thankUsBtn:string;
   shareBtn:string;
@@ -24,6 +33,7 @@ export interface LangInterface {
 export let RuLocale: LangInterface ={
   incomeTitle: 'Мой доход',
   incomeFrequency:{
+    in:'в',
     h:'час',
     d:'день',
     w:'неделю',
@@ -33,11 +43,19 @@ export let RuLocale: LangInterface ={
   purposeTitle: 'Хочу купить',
   purposeInvestPercent: 'Откладываю',
   purposeWorkTime: {
-    w: '40ч/неделя',
+    w: 'раб. время',
     a: 'всё время'
   },
   timerTitle: 'Заплачу своей жизнью',
   timerDimensionsTip: 'годы•недели•дни•часы•минуты•секунды',
+  timerDimensions:{
+    s:'секунды',
+    m:'минуты',
+    h:'часы',
+    d:'дни',
+    w:'недели',
+    y:'годы',
+  },
   timerThankUsText: 'Если было полезно, познавательно, забавно и помогло осуществить или, наоброт, не осуществлять, и вы хотите поблагодарить - мы будем крайне признательны',
   thankUsBtn:'Спасибо',
   shareBtn:'Поделиться',
@@ -46,6 +64,7 @@ export let RuLocale: LangInterface ={
 export let EnLocale: LangInterface ={
   incomeTitle: 'My income',
   incomeFrequency:{
+    in:'per',
     h:'hour',
     d:'day',
     w:'week',
@@ -55,11 +74,19 @@ export let EnLocale: LangInterface ={
   purposeTitle: 'Want to buy',
   purposeInvestPercent: 'put off',
   purposeWorkTime: {
-    w: '40hr/week',
+    w: 'work time',
     a: 'all time'
   },
   timerTitle: 'Pay with my life',
   timerDimensionsTip: 'years•weeks•days•hours•minutes•seconds',
+  timerDimensions:{
+    s:'seconds',
+    m:'minutes',
+    h:'hours',
+    d:'days',
+    w:'weeks',
+    y:'years',
+  },
   timerThankUsText: 'Если было полезно, познавательно, забавно и помогло осуществить или, наоброт, не осуществлять, и вы хотите поблагодарить - мы будем крайне признательны',
   thankUsBtn:'Thank us',
   shareBtn:'Share',
